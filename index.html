@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>URL Shortener project</title>
+
+<style type="text/css">
+    textarea{
+        width:300px;
+        height:300px;
+    }
+</style>
+
+<body>
+
+<h3>Enter a text in the texbox below and click on the button below</h3>
+
+<textarea id="editor"></textarea>
+<button id="submit">Compress</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="https://rawgit.com/flatiron/director/master/build/director.min.js"></script>
+<<script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+    function get_short_url(long_url, login, api_key, func)
+    {
+    $.getJSON(
+        "http://api.bitly.com/v3/shorten?callback=?", 
+        { 
+            "format": "json",
+            "apiKey": api_key,
+            "login": login,
+            "longUrl": long_url
+        },
+        function(response)
+        {
+            func(response.data.url);
+        }
+    );
+    }
+    
+    var login = "stomatrix";
+    var api_key = "R_c3691526084b291593c35ae2883e55cb";
+    var long_url = "http://asdasdsad.com/#asdasd";
+
+    /*
+    get_short_url(long_url, login, api_key, function(short_url) {
+        console.log(short_url);
+    });
+    */
+    
+    $('#submit').click(function(){
+      var login = "stomatrix";
+      var api_key = "R_c3691526084b291593c35ae2883e55cb";
+      content = $('#editor').val();
+      console.log(encodeURIComponent(content));
+      long_url = "http://a.com/#"+content;
+      get_short_url(long_url, login, api_key, function(short_url) {
+        console.log(short_url);
+      });
+      
+    });
+    
+     var router = new Router().init();
+
+     router.on('/food', function () {
+        console.log("asdasd");
+        //
+        // Do something on `/#/some/resource`
+        //
+     });
+      
+     
+     page('/user/:id', function(context){
+        var userId = context.params.id;
+        console.log('Loading details for user', userId);
+     });
+    
+    page();
+    
+    //$('document').ready(function() {});    
+    
+</script>
+
+</body>
+</html>
