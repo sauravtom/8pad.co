@@ -51,6 +51,30 @@
     });
     */
     
+    /*
+    list=[];  //make global to allow in-place changes
+    function cascade(content,list){
+  
+        var len=content.length
+        splits=[];
+        if (len>2000)
+        {
+            //var n=Math.ceil(len/2000);
+            splits=content.match(/.{1,2000}/g);
+            sl=splits.length;
+            for (i = 0; i < sl; i++) { 
+                list=cascade(splits[i],list);
+            }
+        } 
+        else
+        {
+            list.push(content);
+        }
+        return list;
+    }
+
+    */
+    
     $('#submit').click(function(){
       var login = "stomatrix";
       var api_key = "R_c3691526084b291593c35ae2883e55cb";
