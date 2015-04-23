@@ -39,6 +39,7 @@
             func(response.data.url);
         }
     );
+    //return short url too
     }
     
     var login = "stomatrix";
@@ -52,11 +53,11 @@
     */
     
     /*
-    list=[];  //make global to allow in-place changes
+    var list=[];  //make global to allow in-place changes
     function cascade(content,list){
   
         var len=content.length
-        splits=[];
+        var splits=[];
         if (len>2000)
         {
             //var n=Math.ceil(len/2000);
@@ -80,12 +81,31 @@
       var api_key = "R_c3691526084b291593c35ae2883e55cb";
       content = $('#editor').val();
       console.log(encodeURIComponent(content));
-      long_url = "http://a.com/#"+content;
-      get_short_url(long_url, login, api_key, function(short_url) {
-        console.log(short_url);
-      });
+      var list=[];
+      var answer=[];
+      list=cascade(content,list);
+      var len=list.length;
+      for (i=0;i<len;i++)
+      {
+        var long_url = "http://a.com/#"+list[i];
+        var ret=get_short_url(long_url, login, api_key, function(short_url) {
+                console.log(short_url);
+        });
+        ret = ret.replace(/^http:\/\/bit.ly\//, ''); // check regex for correct escaping
+        answer.push(ret);
+      }
       
+      var final=answer.join('~.~');        //or whatever pattern
+      var leng=final.length;
+      if (leng==7)                     //subject to change
+      {
+        return final;
+      }
+      var ans=function(final);
+      console.log(ans);
+      return ans;
     });
+    
     
      var router = new Router().init();
 
