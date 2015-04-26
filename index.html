@@ -28,45 +28,75 @@
 
 
 <script type="text/javascript" charset="utf-8">
-    function get_short_url(long_url, login, api_key, func)
-    {
-    $.getJSON(
-        "http://api.bitly.com/v3/shorten?callback=?", 
-        { 
-            "format": "json",
-            "apiKey": api_key,
-            "login": login,
-            "longUrl": long_url
-        },
-        function(response)
-        {
-            func(response.data.hash);
-        }
-    );
+    function get_short_url(long_url, login, api_key, func){
+        $.getJSON(
+            "http://api.bitly.com/v3/shorten?callback=?", 
+            { 
+                "format": "json",
+                "apiKey": api_key,
+                "login": login,
+                "longUrl": long_url
+            },
+            function(response)
+            {
+                func(response.data.hash);
+            }
+        );
     }
-
-        function expand(url, callback) {
-            $.ajax({
-                dataType: 'jsonp',
-                url: 'http://api.longurl.org/v2/expand',
-                data: {
-                    url: url,
-                    format: 'json'
-                },
-                success: function(response) {
-                    callback(response['long-url']);
-                }
-            });
-        }
+    
+    function get_long_url(short_url, login, api_key, func){
+        $.getJSON(
+            "http://api.bitly.com/v3/expand?callback=?", 
+            { 
+                "format": "json",
+                "apiKey": api_key,
+                "login": login,
+                "shortUrl": short_url
+            },
+            function(response)
+            {
+                func(response.data.expand[0].long_url);
+            }
+        );
+    }
+    
+    
+    var login = "stomatrix";
+    var api_key = "R_c3691526084b291593c35ae2883e55cb";
+    var long_url = "http://asdasdsad.com/#asdasd";
 
     
     function generateHash(s){
       return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
     }
     
+    /*
+    list=[];  //make global to allow in-place changes
+    function cascade(content,list){
+  
+        var len=content.length
+        splits=[];
+        if (len>2000)
+        {
+            //var n=Math.ceil(len/2000);
+            splits=content.match(/.{1,2000}/g);
+            sl=splits.length;
+            for (i = 0; i < sl; i++) { 
+                list=cascade(splits[i],list);
+            }
+        } 
+        else
+        {
+            list.push(content);
+        }
+        return list;
+    }
+
+    */
+    
     $('#submit').click(function(){
-      var login = "stomatrix";
-      var api_key = "R_c3691526084b291593c35ae2883e55cb";
+      //var login = "stomatrix";
+      //var api_key = "R_c3691526084b291593c35ae2883e55cb";
       content = $('#editor').val();
       hash = generateHash(content);
       long_url = "http://"+hash+".com/"+content;
@@ -86,10 +116,18 @@
             console.log(hash);
             $(".container").children().hide();
             $('#article').show();
+            
+            get_long_url('http://bit.ly/'+hash, login, api_key, function(long_url) {
+              console.log(long_url);
+              $('#article').text(long_url);
+            });
+            
+            /*
             expand( encodeURIComponent('http://bit.ly/'+hash), function(response) {
                 console.log(response);
                 $('#article').text(response);
             });
+            */
 
         } else {
             $('#article').hide();
@@ -113,7 +151,7 @@
           });
         };
       }     
-    
+   
 </script>
 
 </body>
