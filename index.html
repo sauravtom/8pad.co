@@ -11,6 +11,8 @@
     #article{
       width:300px;
       height:300px;
+      border: 1px dashed;
+      background: ghostwhite;
     }
 </style>
 
@@ -98,13 +100,14 @@
       //var login = "stomatrix";
       //var api_key = "R_c3691526084b291593c35ae2883e55cb";
       content = $('#editor').val();
+      content = encodeURIComponent(content);
       hash = generateHash(content);
       long_url = "http://"+hash+".com/"+content;
       get_short_url(long_url, login, api_key, function(short_url) {
         console.log(short_url);
         tag = "<br><a href='#{0}' target='_blank'>Your Article</a>".format(short_url);
-
         $( ".container" ).append(tag);
+
       });
       
     });
@@ -119,7 +122,10 @@
             
             get_long_url('http://bit.ly/'+hash, login, api_key, function(long_url) {
               console.log(long_url);
-              $('#article').text(long_url);
+              arr = long_url.split("/");
+              content = arr[arr.length-1];
+              content = decodeURIComponent(content);
+              $('#article').text(content);
             });
             
             /*
@@ -134,10 +140,6 @@
         }
      });
 
-     function redirect(hash){
-      window.location.href += "#"+hash;
-      location.reload();
-     }
       
       //via http://stackoverflow.com/a/4673436/1352702
       if (!String.prototype.format) {
