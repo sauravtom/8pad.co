@@ -1,0 +1,46 @@
+body{
+    //text-align: center;
+    margin-top: 300px;
+  }
+  h1{
+    margin-top: 100px;
+    margin-bottom: 30px;
+  }
+  form{
+    margin-top: 70px;
+    margin-bottom: 40px;
+  }
+  .result{
+    margin-top: 70px;
+  }
+  .result{
+    display: none;
+  }
+  #loading{
+    display: none;
+  }
+  .promote{
+    position: fixed;
+    top:10px;
+    left:20px;
+    text-align: center;
+  }
+
+  textarea{
+        width:300px;
+        height:300px;
+    }
+    #article{
+      width:300px;
+      height:300px;
+      border: 1px dashed;
+      background: ghostwhite;
+    }
+
+#editor{ 
+    position: absolute;
+    top:200px;
+    left:100px;
+}
+
+

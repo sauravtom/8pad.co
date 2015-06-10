@@ -2,21 +2,65 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>URL Shortener project</title>
-
-<style type="text/css">
-    textarea{
-        width:300px;
-        height:300px;
-    }
-    #article{
-      width:300px;
-      height:300px;
-      border: 1px dashed;
-      background: ghostwhite;
-    }
-</style>
+<link rel="stylesheet" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/css/style.css">
 
 <body>
+
+    <div id="editor">
+      function foo(items) {
+        var x = "All this is syntax highlighted";
+        return x;
+      }
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav active"><a href="#A" data-toggle="tab">Code/Text</a></li>
+        <li class="nav"><a href="#B" data-toggle="tab">HTML</a></li>
+        <li class="nav"><a href="#C" data-toggle="tab">Article</a></li>
+    </ul>
+    <br><br>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+        <div class="tab-pane fade in active" id="A">
+          <div id="editor">function foo(items) {
+              var x = "All this is syntax highlighted";
+              return x;
+          }</div>
+        </div>
+
+        <div class="tab-pane fade" id="B">
+          <ol>
+            {% for i in all_requests %}
+              <li>
+                <p>Message: {{i.request_text}}</p>
+                <p>Email: {{i.request_email}}</p>
+                <p>Phone: {{i.request_phone}}</p>
+                <button class="btn btn-success btn-sm" id="{{i.objectId}}" onClick="accept_request(this.id)">Accept</button>
+                <button class="btn btn-danger btn-sm" id="{{i.objectId}}" onClick="reject_request(this.id)">Reject</button>
+              </li>
+              <hr>
+            {% endfor %}
+          </ol>
+        </div>
+
+        <div class="tab-pane fade" id="C">
+          <ol>
+            {% for i in all_requests %}
+              <li>
+                <p>Message: {{i.request_text}}</p>
+                <p>Email: {{i.request_email}}</p>
+                <p>Phone: {{i.request_phone}}</p>
+                <button class="btn btn-success btn-sm" id="{{i.objectId}}" onClick="accept_request(this.id)">Accept</button>
+                <button class="btn btn-danger btn-sm" id="{{i.objectId}}" onClick="reject_request(this.id)">Reject</button>
+              </li>
+              <hr>
+            {% endfor %}
+          </ol>
+        </div>
+
+    </div>
 
 <div class="container">
   <h3>Enter a text in the texbox below and click on the button below</h3>
@@ -26,8 +70,29 @@
   <div id="article"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
+
+<div class="promote">
+
+    <iframe src="https://ghbtns.com/github-btn.html?user=sauravtom&repo=urldb&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+
+    <a href="https://news.ycombinator.com/submit" class="hn-button" data-url="http://sauravtom.com/urldb" data-count="horizontal" style="margin-right:100px">Vote on Hacker News</a>
+
+
+    <script type="text/javascript">var HN=[];HN.factory=function(e){return function(){HN.push([e].concat(Array.prototype.slice.call(arguments,0)))};},HN.on=HN.factory("on"),HN.once=HN.factory("once"),HN.off=HN.factory("off"),HN.emit=HN.factory("emit"),HN.load=function(){var e="hn-button.js";if(document.getElementById(e))return;var t=document.createElement("script");t.id=e,t.src="//hn-button.herokuapp.com/hn-button.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)},HN.load();</script>
+
+    <script type="text/javascript" src="//www.redditstatic.com/button/button1.js"></script>
+
+    <a class="twitter-follow-button"
+      href="https://twitter.com/sauravtom"
+      data-show-count="false"
+      data-lang="en">@SauravTom</a>
+    <script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
+
+</div>
 
 <script type="text/javascript" charset="utf-8">
     function get_short_url(long_url, login, api_key, func){
@@ -153,6 +218,11 @@
           });
         };
       }     
+
+      /*EDITOR*/
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
    
 </script>
 
