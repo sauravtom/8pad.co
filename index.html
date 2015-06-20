@@ -1,5 +1,6 @@
 <html>
 <head>
+<<<<<<< HEAD
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>URL Shortener project</title>
   <link rel="stylesheet" href="static/css/bootstrap.min.css">
@@ -9,6 +10,22 @@
 
 <body>
 
+=======
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>URL Shortener project</title>
+<link rel="stylesheet" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/css/style.css">
+
+<body>
+
+    <div id="editor">
+      function foo(items) {
+        var x = "All this is syntax highlighted";
+        return x;
+      }
+    </div>
+
+>>>>>>> 96b16762e0aa5b1760a077ea7e6b62aac5601fbf
     <ul class="nav nav-tabs">
         <li class="nav active"><a href="#A" data-toggle="tab">Code/Text</a></li>
         <li class="nav"><a href="#B" data-toggle="tab">HTML</a></li>
@@ -19,12 +36,19 @@
     <div class="tab-content">
 
         <div class="tab-pane fade in active" id="A">
+<<<<<<< HEAD
           <!-- <div id="editor">
             function foo(items) {
                 var x = "All this is syntax highlighted";
                 return x;
             }
           </div> -->
+=======
+          <div id="editor">function foo(items) {
+              var x = "All this is syntax highlighted";
+              return x;
+          }</div>
+>>>>>>> 96b16762e0aa5b1760a077ea7e6b62aac5601fbf
         </div>
 
         <div class="tab-pane fade" id="B">
@@ -124,7 +148,6 @@
             }
         );
     }
-
     
     function generateHash(s){
       return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
@@ -134,9 +157,7 @@
     $('#submit').click(function(){
       //var login = "stomatrix";
       //var api_key = "R_c3691526084b291593c35ae2883e55cb";
-      var textContent = document.getElementById("editor");
-      content = editor.getSession().getValue();//textContent.value; //$('#editor').val();
-      console.log(content);
+      content = editor.getSession().getValue();
       content = encodeURIComponent(content);
       hash = generateHash(content);
       long_url = "http://"+hash+".com/"+content;
@@ -171,7 +192,6 @@
                 $('#article').text(response);
             });
             */
-
 
         } else {
             $('#article').hide();
