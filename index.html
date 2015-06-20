@@ -1,0 +1,206 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>URL Shortener project</title>
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script type="text/javascript" src="credentials.js"></script>
+</head>
+
+<body>
+
+    <ul class="nav nav-tabs">
+        <li class="nav active"><a href="#A" data-toggle="tab">Code/Text</a></li>
+        <li class="nav"><a href="#B" data-toggle="tab">HTML</a></li>
+        <li class="nav"><a href="#C" data-toggle="tab">Article</a></li>
+    </ul>
+    <br><br>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+        <div class="tab-pane fade in active" id="A">
+          <!-- <div id="editor">
+            function foo(items) {
+                var x = "All this is syntax highlighted";
+                return x;
+            }
+          </div> -->
+        </div>
+
+        <div class="tab-pane fade" id="B">
+          <ol>
+            {% for i in all_requests %}
+              <li>
+                <p>Message: {{i.request_text}}</p>
+                <p>Email: {{i.request_email}}</p>
+                <p>Phone: {{i.request_phone}}</p>
+                <button class="btn btn-success btn-sm" id="{{i.objectId}}" onClick="accept_request(this.id)">Accept</button>
+                <button class="btn btn-danger btn-sm" id="{{i.objectId}}" onClick="reject_request(this.id)">Reject</button>
+              </li>
+              <hr>
+            {% endfor %}
+          </ol>
+        </div>
+
+        <div class="tab-pane fade" id="C">
+          <ol>
+            {% for i in all_requests %}
+              <li>
+                <p>Message: {{i.request_text}}</p>
+                <p>Email: {{i.request_email}}</p>
+                <p>Phone: {{i.request_phone}}</p>
+                <button class="btn btn-success btn-sm" id="{{i.objectId}}" onClick="accept_request(this.id)">Accept</button>
+                <button class="btn btn-danger btn-sm" id="{{i.objectId}}" onClick="reject_request(this.id)">Reject</button>
+              </li>
+              <hr>
+            {% endfor %}
+          </ol>
+        </div>
+
+    </div>
+
+<div class="container" style="position: realtive;">
+  <h3>Enter a text in the texbox below and click on the button below</h3>
+  <textarea id="editor"></textarea>
+  <br>
+  <button id="submit">GO</button>
+  <div id="article"></div>
+</div>
+
+<script src="static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
+
+<!-- div for social media plugins -->
+<div class="promote">
+
+    <iframe src="https://ghbtns.com/github-btn.html?user=sauravtom&repo=urldb&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+
+    <a href="https://news.ycombinator.com/submit" class="hn-button" data-url="http://sauravtom.com/urldb" data-count="horizontal" style="margin-right:100px">Vote on Hacker News</a>
+
+
+    <script type="text/javascript">var HN=[];HN.factory=function(e){return function(){HN.push([e].concat(Array.prototype.slice.call(arguments,0)))};},HN.on=HN.factory("on"),HN.once=HN.factory("once"),HN.off=HN.factory("off"),HN.emit=HN.factory("emit"),HN.load=function(){var e="hn-button.js";if(document.getElementById(e))return;var t=document.createElement("script");t.id=e,t.src="//hn-button.herokuapp.com/hn-button.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)},HN.load();</script>
+
+    <script type="text/javascript" src="//www.redditstatic.com/button/button1.js"></script>
+
+    <a class="twitter-follow-button"
+      href="https://twitter.com/sauravtom"
+      data-show-count="false"
+      data-lang="en">@SauravTom</a>
+    <script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
+
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    function get_short_url(long_url, login, api_key, func){
+        $.getJSON(
+            "http://api.bitly.com/v3/shorten?callback=?", 
+            { 
+                "format": "json",
+                "apiKey": api_key,
+                "login": login,
+                "longUrl": long_url
+            },
+            function(response)
+            {
+                func(response.data.hash);
+            }
+        );
+    }
+    
+    function get_long_url(short_url, login, api_key, func){
+        $.getJSON(
+            "http://api.bitly.com/v3/expand?callback=?", 
+            { 
+                "format": "json",
+                "apiKey": api_key,
+                "login": login,
+                "shortUrl": short_url
+            },
+            function(response)
+            {
+                func(response.data.expand[0].long_url);
+            }
+        );
+    }
+
+    
+    function generateHash(s){
+      return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+    }
+    
+    
+    $('#submit').click(function(){
+      //var login = "stomatrix";
+      //var api_key = "R_c3691526084b291593c35ae2883e55cb";
+      var textContent = document.getElementById("editor");
+      content = editor.getSession().getValue();//textContent.value; //$('#editor').val();
+      console.log(content);
+      content = encodeURIComponent(content);
+      hash = generateHash(content);
+      long_url = "http://"+hash+".com/"+content;
+      get_short_url(long_url, login, api_key, function(short_url) {
+        console.log(short_url);
+        tag = "<br><a href='#{0}' target='_blank'>Your Article</a>".format(short_url);
+        $( ".container" ).append(tag);
+
+      });
+      
+    });
+
+     $('document').ready(function() {
+      if(window.location.hash) {
+            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+            console.log("hash found in url: "+hash);
+            console.log(hash);
+            $(".container").children().hide();
+            $('#article').show();
+            
+            get_long_url('http://bit.ly/'+hash, login, api_key, function(long_url) {
+              console.log(long_url);
+              arr = long_url.split("/");
+              content = arr[arr.length-1];
+              content = decodeURIComponent(content);
+              $('#article').text(content);
+            });
+            
+            /*
+            expand( encodeURIComponent('http://bit.ly/'+hash), function(response) {
+                console.log(response);
+                $('#article').text(response);
+            });
+            */
+
+
+        } else {
+            $('#article').hide();
+        }
+     });
+
+      
+      //via http://stackoverflow.com/a/4673436/1352702
+      if (!String.prototype.format) {
+        String.prototype.format = function() {
+          var args = arguments;
+          return this.replace(/{(\d+)}/g, function(match, number) { 
+            return typeof args[number] != 'undefined'
+              ? args[number]
+              : match
+            ;
+          });
+        };
+      }     
+
+      /*EDITOR*/
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
+      editor.session.setOptions({
+          tabSize: 8,
+          useSoftTabs: true
+      });
+</script>
+
+</body>
+</html>
